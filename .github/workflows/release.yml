@@ -16,23 +16,22 @@ jobs:
         with:
           toolchain: stable
           target: x86_64-unknown-linux-musl
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF_NAME})
+      
       - name: Install package
         run: |
           sudo apt-get -y install tree
           which tree
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF_NAME})
-
+          
       - name: Updating version
         run: sed -i -e 's/^version = .*/version = "${{ steps.get_version.outputs.VERSION }}"/' Cargo.toml
 
       - name: Install Protoc
         uses: arduino/setup-protoc@v1            
       - run: cargo build --release --target x86_64-unknown-linux-musl
-
-      - name: ls
-        run: tree
 
       - name: Docker login
         env:
