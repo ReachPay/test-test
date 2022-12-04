@@ -1,5 +1,5 @@
-FROM rust:1-alpine3.16
-RUN apk add --update openssl
-RUN apk add --update openssl-dev
-COPY ./target/x86_64-unknown-linux-musl/release/test-test ./app
+FROM rust:latest
+RUN apt install openssl
+RUN apt install openssl-dev
+COPY ./target/release/test-test ./app
 ENTRYPOINT ["./app"]
